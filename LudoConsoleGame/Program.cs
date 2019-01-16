@@ -40,7 +40,7 @@ namespace LudoConsoleGame
                 int.TryParse(pieceNr, out int pieceIdToMove);
                 ludoGame.MovePiece(currentPlayer, pieceIdToMove, dieceResult);
                 ludoGame.EndTurn(currentPlayer);
-            } while (ludoGame.GetWinner() != null);
+            } while (ludoGame.GetWinner() == null);
 
             Console.WriteLine($"{ludoGame.GetWinner().Name} is the winner!!!");
 

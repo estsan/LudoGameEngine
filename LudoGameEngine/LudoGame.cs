@@ -66,6 +66,15 @@ namespace LudoGameEngine
             {
                 currentPlayerId = nextPlayerId - numberOfPlayers;
             }
+
+            // Check for a winner
+            foreach (var xplayer in _players)
+            {
+                if (xplayer.Pieces.All(p => p.State == PieceGameState.Goal))
+                {
+                    _gameState = GameState.Ended;
+                }
+            }
         }
 
         public Piece[] GetAllPiecesInGame()
@@ -103,6 +112,16 @@ namespace LudoGameEngine
 
         public void MovePiece(Player player, int pieceId, int numberOfFields)
         {
+            if (_gameState == GameState.Ended)
+            {
+                throw new Exception("Game is ended, and a winner is found");
+            }
+
+            if (_gameState == GameState.NotStarted)
+            {
+                throw new Exception("Game is not yet started, please start the game");
+            }
+
             var piece = player.Pieces.First(p => p.PieceId == pieceId);
 
             if (piece.State == PieceGameState.Goal)

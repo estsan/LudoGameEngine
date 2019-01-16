@@ -2,20 +2,20 @@ namespace LudoGameEngine
 {
     public interface ILudoGame
     {
-       bool StartGame();
+        bool StartGame();
         Player AddPlayer(string name, PlayerColor color);
-        Player[] GetPlayers(); 
-        GameState GetGameState(); 
-       void StartTurn(Player player);
-       
-       int RollDiece();
+        Player[] GetPlayers();
+        GameState GetGameState();
+        //void StartTurn(Player player);
 
-       void MovePiece(Player player, Piece piece);
-       void EndTurn(Player player);
+        int RollDiece();
 
-       Player GetCurrentPlayer();
-       Piece[] GetAllPieces();
+        void MovePiece(Player player, int pieceId, int numberOfFields);
+        void EndTurn(Player player);
 
+        Player GetCurrentPlayer();
+        Piece[] GetAllPiecesInGame();
 
+        Player GetWinner();
     }
 }

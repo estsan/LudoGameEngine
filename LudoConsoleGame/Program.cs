@@ -19,6 +19,30 @@ namespace LudoConsoleGame
                 System.Environment.Exit(1);
             }
             Console.WriteLine("Game started");
+            do
+            {
+                Console.WriteLine();
+                var currentPlayer = ludoGame.GetCurrentPlayer();
+                Console.WriteLine($"Current player is {currentPlayer.Name}");
+                var dieceResult = ludoGame.RollDiece();
+                Console.WriteLine($"Diece roll gave: {dieceResult}");
+                Console.WriteLine("Choose which piece to move:");
+                foreach (var piece in currentPlayer.Pieces) {
+                    if (piece.State == PieceGameState.Goal)
+                    {
+                        continue;
+                    }
+
+                    Console.WriteLine($"{piece.PieceId}. located in {piece.State} at {piece.Position}");
+                    
+                }
+                var pieceNr = Console.ReadLine();
+                int.TryParse(pieceNr, out int pieceIdToMove);
+                ludoGame.MovePiece(currentPlayer, pieceIdToMove, dieceResult);
+                ludoGame.EndTurn(currentPlayer);
+            } while (ludoGame.GetWinner() != null);
+
+            Console.WriteLine($"{ludoGame.GetWinner().Name} is the winner!!!");
 
             Console.Write("Press any key to exit!");
             Console.ReadKey();
@@ -30,10 +54,10 @@ namespace LudoConsoleGame
             do
             {
                 Console.WriteLine("Choose color:");
-                Console.WriteLine("1. Red");
-                Console.WriteLine("2. Green");
-                Console.WriteLine("3. Blue");
-                Console.WriteLine("4. Yellow");
+                Console.WriteLine("0. Red");
+                Console.WriteLine("1. Green");
+                Console.WriteLine("2. Blue");
+                Console.WriteLine("3. Yellow");
                 Console.Write("Enter number (press enter to skip) :");
                 var color = Console.ReadLine();
                 if (string.IsNullOrEmpty(color))

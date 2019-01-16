@@ -4,6 +4,7 @@ namespace LudoGameEngine
     {
         HomeArea,
         InGame,
+        GoalPath,
         Goal
     }
 }

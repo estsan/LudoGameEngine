@@ -33,7 +33,14 @@ namespace LudoGameEngine
             {
                 PlayerId = _players.Count(),
                 Name = name,
-                PlayerColor = color
+                PlayerColor = color,
+                Pieces = new Piece[]
+                {
+                    new Piece{ Position = 0, State = PieceGameState.HomeArea, PieceId = 0},
+                    new Piece{ Position = 0, State = PieceGameState.HomeArea, PieceId = 1},
+                    new Piece{ Position = 0, State = PieceGameState.HomeArea, PieceId = 2},
+                    new Piece{ Position = 0, State = PieceGameState.HomeArea, PieceId = 3}
+                }
             };
 
             _players.Add(player);
@@ -43,18 +50,45 @@ namespace LudoGameEngine
 
         public void EndTurn(Player player)
         {
-            // move to next player
-            throw new NotImplementedException();
+            if (player.PlayerId != currentPlayerId)
+            {
+                throw new Exception($"Wrong player, it's currently {currentPlayerId}");
+            }
+
+            int numberOfPlayers = _players.Count();
+            int nextPlayerId = player.PlayerId + 1;
+
+            if (nextPlayerId <= numberOfPlayers - 1)
+            {
+                currentPlayerId = nextPlayerId;
+            }
+            else
+            {
+                currentPlayerId = nextPlayerId - numberOfPlayers;
+            }
         }
 
-        public Piece[] GetAllPieces()
+        public Piece[] GetAllPiecesInGame()
         {
-            throw new NotImplementedException();
+            int numberOfPieces = _players.Count() * 4;
+            Piece[] pieces = new Piece[numberOfPieces];
+
+            int pieceIndex = 0;
+            foreach (var player in _players)
+            {
+                foreach (var piece in player.Pieces)
+                {
+                    pieces[pieceIndex] = piece;
+                    pieceIndex++;
+                }
+            }
+
+            return pieces;
         }
 
         public Player GetCurrentPlayer()
         {
-            throw new NotImplementedException();
+            return _players.Where(p => p.PlayerId == currentPlayerId).FirstOrDefault();
         }
 
         public GameState GetGameState()
@@ -67,13 +101,40 @@ namespace LudoGameEngine
             return _players.ToArray();
         }
 
-        public void MovePiece(Player player, Piece piece)
+        public void MovePiece(Player player, int pieceId, int numberOfFields)
         {
-            throw new NotImplementedException();
+            var piece = player.Pieces.First(p => p.PieceId == pieceId);
+
+            if (piece.State == PieceGameState.Goal)
+            {
+                throw new Exception("Piece is in Goal and unable to move");
+            }
+
+            var currentPosition = piece.Position;
+
+            var newPosition = currentPosition += numberOfFields;
+            piece.State = PieceGameState.InGame;
+            piece.Position = newPosition;
+
+            if (newPosition >= 51)
+            {
+                piece.State = PieceGameState.GoalPath;
+            }
+
+            if (newPosition > 55)
+            {
+                piece.State = PieceGameState.Goal;
+            }
+
         }
 
         public int RollDiece()
         {
+            if (_diece == null)
+            {
+                throw new NullReferenceException("Diece is not set to an instance");
+            }
+
             if (_gameState != GameState.Started)
             {
                 throw new Exception($"Unable roll diece since the game is not started, it's current state is: {_gameState}");
@@ -103,9 +164,16 @@ namespace LudoGameEngine
             return true;
         }
 
-        public void StartTurn(Player player)
+        public Player GetWinner()
         {
-            throw new NotImplementedException();
+            foreach (var player in _players) { 
+                if(player.Pieces.All(p => p.State == PieceGameState.Goal))
+                {
+                    _gameState = GameState.Ended;
+                    return player;
+                }
+            }
+            return null;
         }
     }
 }

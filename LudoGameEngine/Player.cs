@@ -6,5 +6,12 @@ namespace LudoGameEngine
         public string Name {get; set;}
         public PlayerColor PlayerColor { get; set; }
         public Piece[] Pieces {get; set;}
+        public int Offset
+        {
+            get
+            {
+                return (int)PlayerColor * 13;
+            }
+        }
     }
 }

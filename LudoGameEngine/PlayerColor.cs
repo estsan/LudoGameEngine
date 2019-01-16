@@ -2,10 +2,10 @@ namespace LudoGameEngine
 {
     public enum PlayerColor
     {
-        Red,
-        Green,
-        Blue,
-        Yellow
+        Red = 1,
+        Green = 2,
+        Blue = 3,
+        Yellow = 4
 
     }
 }

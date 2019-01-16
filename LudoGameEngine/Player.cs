@@ -2,7 +2,9 @@ namespace LudoGameEngine
 {
     public class Player
     {
-        string Name {get; set;}
-        Piece[] Bricks {get; set;}
+        public int PlayerId { get; set; }
+        public string Name {get; set;}
+        public PlayerColor PlayerColor { get; set; }
+        public Piece[] Pieces {get; set;}
     }
 }

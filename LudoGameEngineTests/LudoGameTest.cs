@@ -17,8 +17,10 @@ namespace LudoGameEngineTests
 
             // Assert
             Assert.NotNull(player);
-            Assert.Equal(0, player.PlayerId);
+            Assert.Equal(1, player.PlayerId);
         }
+		
+		
 
         [Fact]
         public void AddPlayer_TwoBluePlayers_SecondPlayerReturnNull()

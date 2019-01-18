@@ -17,7 +17,7 @@ namespace LudoGameEngineTests
 
             // Assert
             Assert.NotNull(player);
-            Assert.Equal(1, player.PlayerId);
+            Assert.Equal(0, player.PlayerId);
         }
 		
 		
